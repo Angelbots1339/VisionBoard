@@ -18,7 +18,7 @@ public class RobotMap {
 	 public static int motorOnePort = 4;
 	 public static int motorTwoPort = 5;
 	 public static int motorThreePort = 6;
-	 public static int motorFourPort = 7;
+	 public static int motorFourPort = 2;
 	 
 	 public static int madCatzPort = 0;
 	 public static int madCatzY = 1;
