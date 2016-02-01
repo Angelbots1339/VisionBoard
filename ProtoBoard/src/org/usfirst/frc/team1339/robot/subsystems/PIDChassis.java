@@ -121,7 +121,7 @@ public class PIDChassis extends PIDSubsystem {
     	SmartDashboard.putNumber("Gyro Updating Val", gyroUpdatingVal);
     	gyroDiff = gyroSetpoint-gyroUpdatingVal;
     	conditionalPID = 2;
-    	//System.out.print("poop");
+    	
     }
     
     public void calibrateGyro() {
