@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1339.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -22,6 +21,7 @@ public class GyroVision extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	PIDChassis.gyroOffset();
+    	System.out.println("crap");
     }
 
     // Make this return true when this Command no longer needs to run execute()

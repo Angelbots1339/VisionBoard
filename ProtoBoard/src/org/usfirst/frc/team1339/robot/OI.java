@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1339.robot;
 
 import org.usfirst.frc.team1339.robot.commands.DriveWithButtons;
+import org.usfirst.frc.team1339.robot.commands.GyroVision;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -43,6 +44,7 @@ public class OI {
 	JoystickButton sixty = new JoystickButton(madCatz, 2);
 	JoystickButton eighty = new JoystickButton(madCatz, 6);
 	JoystickButton hundred = new JoystickButton(madCatz, 4);
+	JoystickButton gyrovision = new JoystickButton(madCatz, 7);
 
 	public OI(){
 		twenty.whileHeld(new DriveWithButtons());
@@ -50,6 +52,7 @@ public class OI {
 		sixty.whileHeld(new DriveWithButtons());
 		eighty.whileHeld(new DriveWithButtons());
 		hundred.whileHeld(new DriveWithButtons());
+		gyrovision.whileHeld(new GyroVision());
 	}
 	
 	public Joystick getMadCatz(){

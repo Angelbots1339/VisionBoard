@@ -21,6 +21,7 @@ public class DriveWithJoystick extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	PIDChassis.gyroVision();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -39,6 +40,8 @@ public class DriveWithJoystick extends CommandBase {
     		speed3 = 0;
     	
     	Motors.joystickDrive(speed1, speed2, speed3);
+    	
+    	PIDChassis.gyroOffset();
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -2,6 +2,7 @@ package org.usfirst.frc.team1339.robot.subsystems;
 
 import org.usfirst.frc.team1339.robot.RobotMap;
 import org.usfirst.frc.team1339.robot.commands.DriveWithJoystick;
+import org.usfirst.frc.team1339.robot.commands.GyroVision;
 import org.usfirst.frc.team1339.robot.commands.RunVision;
 
 import com.ni.vision.NIVision.SettingType;
@@ -38,6 +39,7 @@ public class PIDChassis extends PIDSubsystem {
     double gyroDiff;
     double gyroInitialVal;//Gyro Value
     double gyroUpdatingVal;
+    public static double gyroAngle;
     // Initialize your subsystem here
     public PIDChassis() {
     	super("PIDChassis", Kp, Ki, Kd);
@@ -54,6 +56,9 @@ public class PIDChassis extends PIDSubsystem {
     	
 		conditionalPID = 0;
     	
+		gyroAngle = chassisGyro.getAngle();
+		
+		SmartDashboard.putNumber("GRYO", gyroAngle);
     	//setAbsoluteTolerance(100);
     	
     	// Vision
@@ -113,7 +118,10 @@ public class PIDChassis extends PIDSubsystem {
     public void gyroOffset(){
     	
     	gyroUpdatingVal = chassisGyro.getAngle();
+    	SmartDashboard.putNumber("Gyro Updating Val", gyroUpdatingVal);
     	gyroDiff = gyroSetpoint-gyroUpdatingVal;
+    	conditionalPID = 2;
+    	//System.out.print("poop");
     }
     
     public void calibrateGyro() {
@@ -128,6 +136,15 @@ public class PIDChassis extends PIDSubsystem {
     	//PID to align with goal
     	double[] centerXs = table.getNumberArray("centerX", defaultValue);
     	double PIDX = 0;
+    	gyroAngle = chassisGyro.getAngle();
+    	SmartDashboard.putNumber("GRRRROOO", Math.round(gyroAngle));
+    	
+    	gyroUpdatingVal = chassisGyro.getAngle();
+    	SmartDashboard.putNumber("Gyro Updating Val", gyroUpdatingVal);
+    	SmartDashboard.putNumber("gyroSetPoint", gyroSetpoint);
+    	SmartDashboard.putNumber("COnditionalPID", conditionalPID);
+    	
+    	gyroDiff = gyroSetpoint-gyroUpdatingVal;
     	
 		for (double centerX : centerXs) {
 			SmartDashboard.putNumber("X", centerX);
@@ -135,6 +152,7 @@ public class PIDChassis extends PIDSubsystem {
 			SmartDashboard.putNumber("PIDX", PIDX);
 			//return PIDX;
 		}
+		SmartDashboard.putNumber("GyroDiff", gyroDiff);
 		if(Math.abs(VisionSETpoint-PIDX)<10){
 			PIDX = VisionSETpoint;  
 			conditionalPID = 1;
@@ -143,7 +161,7 @@ public class PIDChassis extends PIDSubsystem {
 			return PIDX;
 		}
 		else if (conditionalPID == 2){
-			return gyroDiff;
+			return gyroAngle;
 		}
 		else return 0;
 		
