@@ -39,6 +39,14 @@ public class PIDChassis extends PIDSubsystem {
     double gyroDiff;
     double gyroInitialVal;//Gyro Value
     double gyroUpdatingVal;
+    
+    double distanceToGoal; //for calculating exact distance to goal
+    double scaledDistance;//for determining how far to turn with PID vision
+    double scaledDistanceArea;
+    
+    double FOVpixel;
+    double Tpixel;
+    
     public static double gyroAngle;
     // Initialize your subsystem here
     public PIDChassis() {
@@ -99,6 +107,25 @@ public class PIDChassis extends PIDSubsystem {
 		conditionalPID = 1;
     }
     
+    public void distanceCalculator(){
+    	distanceToGoal = 0;
+    	double[] lengths = table.getNumberArray("length", defaultValue);
+		for (double length : lengths) {
+			Tpixel = length;
+		}
+		FOVpixel = 300;
+    	distanceToGoal = (20/12)*FOVpixel/(2*Tpixel*(Math.tan(49)));
+    }
+    
+    public void scaledVision(){
+    	scaledDistance = 0;
+    	double[] areas = table.getNumberArray("area", defaultValue);
+		for (double area : areas) {
+			scaledDistanceArea = area;
+		}
+		scaledDistance = scaledDistanceArea*0.2;//NEEDS TESTING
+    }
+    
     public void gyroVision(){
     	double[] centerXs = table.getNumberArray("centerX", defaultValue);
     	double offsetX = 0;
@@ -109,7 +136,7 @@ public class PIDChassis extends PIDSubsystem {
 		
 		gyroInitialVal = chassisGyro.getAngle();
     	diff = VisionSETpoint-offsetX;
-    	gyroSetpoint = gyroInitialVal+diff;
+    	gyroSetpoint = gyroInitialVal+(diff*scaledDistance);//MIGHT NOT WORK. NEEDS TESTING 
     	setSetpoint(gyroSetpoint);
     	
     	conditionalPID = 2;
